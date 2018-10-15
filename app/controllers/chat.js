@@ -12,8 +12,11 @@ module.exports.beginChat = function(application, req, res){
         res.render('index', {validacao : erros});
         return;
     }
-    
-    res.render('chat');
-    
+    //Emissão da mensagem para os clientes quando o mesmo se conecta
+    application.get('io').emit("msgToClient", {apelido: dadosForm.apelido, mensagem: "A wild "+ dadosForm.apelido + " appeared!"});
+    console.log("A wild "+ dadosForm.apelido + " appeared!");
+
+
+    res.render('chat', {dadosForm : dadosForm});
 
 };
