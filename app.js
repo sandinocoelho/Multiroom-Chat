@@ -25,6 +25,10 @@ io.on('connection', function(socket){
         // socket.emit('msgToClient', {apelido: data.apelido, mensagem: data.mensagem});
         // socket.broadcast.emit('msgToClient', {apelido: data.apelido, mensagem: data.mensagem});
         app.get('io').emit("msgToClient", {apelido: data.apelido, mensagem: data.mensagem});
+        if(parseInt(data.control) == 0){
+            app.get('io').emit("addPart", {apelido: data.apelido});
+        }
+
         console.log(data);
     });
 });

@@ -81,21 +81,7 @@
 			
 			<div class="row participantes" id="participantes" style="display:none">
 				<div class="col-md-1"></div>
-				<div class="col-md-10">
-					<span class="participante">
-						<img src="images/ico_usuario.png" />
-						Jorge
-					</span>
-					
-					<span class="participante">
-						<img src="images/ico_usuario.png" />
-						José
-					</span>
-					
-					<span class="participante">
-						<img src="images/ico_usuario.png" />
-						Fernando
-					</span>
+				<div class="col-md-10" id="pessoas">
 				</div>
 				<div class="col-md-1"></div>
                 
@@ -109,6 +95,7 @@
 						<div class="input-group">
 							<input type="text" class="form-control" placeholder="Mensagem" id="mensagem">
 							<input type="hidden" value="<%=dadosForm.apelido%>" id="apelido">
+							<input type="hidden" value="0" id="control_apelido">
 							<span class="input-group-btn">
 								<button class="btn btn-default" type="button" id="send_message">></button>
 							</span>
@@ -126,8 +113,13 @@
 			$('#send_message').on('click touch', function(data){
 				socket.emit(
 					'msgToServer',
-					{apelido: $('#apelido').val(), mensagem: $('#mensagem').val()}
+					{
+						apelido: $('#apelido').val(),
+						mensagem: $('#mensagem').val(),
+						control: $('#control_apelido').val()
+					}
 				);
+				$('#control_apelido').val(1);
 			});
 
 			//Enviando sinal de entrada de usuário
@@ -139,6 +131,17 @@
 				html += '</div>';
 
 				$('#dialogo').append(html);
+			});
+
+			//Enviando sinal de entrada de usuário
+			socket.on('addPart', function(data){
+				var html = "";
+				html += '<span class="participante">';
+					html += '<img src="images/ico_usuario.png">';
+					html += data.apelido;
+				html += '</span>';
+
+				$('#pessoas').append(html);
 			});
 		</script>
 	</body>
